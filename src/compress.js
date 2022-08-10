@@ -6,10 +6,16 @@ function compress(req, res, input) {
 
   sharp(input)
     .grayscale(req.params.grayscale)
+    .resize({
+      width: 720,
+      height: null,
+      withoutEnlargement: true
+    })
     .toFormat(format, {
       quality: req.params.quality,
       progressive: true,
-      optimizeScans: true
+      optimizeScans: true,
+      effort: 1
     })
     .toBuffer((err, output, info) => {
       if (err || !info || res.headersSent) return redirect(req, res)
